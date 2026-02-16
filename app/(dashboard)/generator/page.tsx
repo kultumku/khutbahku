@@ -86,8 +86,8 @@ export default function GeneratorPage() {
                 {[1, 2, 3, 4].map((s) => (
                     <div key={s} className="flex items-center">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${s < step ? 'bg-[var(--color-primary)] text-white' :
-                                s === step ? 'bg-[var(--color-primary)] text-white scale-110 shadow-lg shadow-[var(--color-primary)]/30' :
-                                    'bg-[var(--color-border)] text-[var(--color-text-muted)]'
+                            s === step ? 'bg-[var(--color-primary)] text-white scale-110 shadow-lg shadow-[var(--color-primary)]/30' :
+                                'bg-[var(--color-border)] text-[var(--color-text-muted)]'
                             }`}>
                             {s < step ? '✓' : s}
                         </div>
@@ -104,7 +104,7 @@ export default function GeneratorPage() {
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
                     <div className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 text-center shadow-2xl">
                         <div className="loader mx-auto mb-6"></div>
-                        <p className="text-[var(--color-primary)] font-semibold text-lg mb-2">Generating Khutbah...</p>
+                        <p className="text-[var(--color-primary)] font-semibold text-lg mb-2">Menyusun Khutbah...</p>
                         <p className="text-[var(--color-text-secondary)] text-sm animate-pulse">{loadingMsg}</p>
                     </div>
                 </div>
@@ -148,8 +148,8 @@ export default function GeneratorPage() {
                                 key={cat.id}
                                 onClick={() => setThemeFilter(cat.id)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${themeFilter === cat.id
-                                        ? 'bg-[var(--color-primary)] text-white shadow-md'
-                                        : 'bg-white text-[var(--color-text-secondary)] border border-[var(--color-border)] hover:border-[var(--color-primary)]'
+                                    ? 'bg-[var(--color-primary)] text-white shadow-md'
+                                    : 'bg-white text-[var(--color-text-secondary)] border border-[var(--color-border)] hover:border-[var(--color-primary)]'
                                     }`}
                             >
                                 {cat.name}

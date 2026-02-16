@@ -35,18 +35,18 @@ export default function LandingPage() {
                     <div className="animate-fade-in">
                         <div className="inline-flex items-center gap-2 bg-[var(--color-primary-50)] text-[var(--color-primary)] px-4 py-2 rounded-full text-sm font-medium mb-8">
                             <span className="animate-pulse">✨</span>
-                            <span>Powered by AI — 100% Gratis</span>
+                            <span>Teknologi Pintar — 100% Gratis</span>
                         </div>
 
                         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-[var(--color-text-primary)] leading-tight mb-6">
                             Buat Khutbah Berkualitas
                             <br />
-                            <span className="gradient-text">dalam 5 Menit dengan AI</span>
+                            <span className="gradient-text">dalam 5 Menit Secara Otomatis</span>
                         </h1>
 
                         <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-10 leading-relaxed">
                             Tidak perlu pusing menyiapkan khutbah lagi. Cukup pilih tema,
-                            gaya bahasa, dan biarkan AI menyusun khutbah lengkap dengan dalil shahih.
+                            gaya bahasa, dan biarkan sistem menyusun khutbah lengkap dengan dalil shahih.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -147,7 +147,7 @@ export default function LandingPage() {
                             { step: '1', icon: '📅', title: 'Pilih Jenis Acara', desc: 'Khutbah Jumat, Idul Fitri, Nikah, dan lainnya' },
                             { step: '2', icon: '📝', title: 'Pilih Tema', desc: '20 tema dari Tauhid hingga Dakwah Digital' },
                             { step: '3', icon: '🎭', title: 'Pilih Gaya Bahasa', desc: 'Formal, Menyentuh Hati, Puitis, atau Kekinian' },
-                            { step: '4', icon: '🚀', title: 'Generate!', desc: 'AI menyusun khutbah lengkap dalam hitungan detik' },
+                            { step: '4', icon: '🚀', title: 'Generate!', desc: 'Sistem menyusun khutbah lengkap dalam hitungan detik' },
                         ].map((item, i) => (
                             <div key={i} className="relative text-center">
                                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)] text-white text-2xl font-bold mb-4 shadow-lg shadow-[var(--color-primary)]/20">

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { buildPrompt } from '@/lib/utils/prompts';
 
 export async function POST(request: Request) {
@@ -21,58 +21,33 @@ export async function POST(request: Request) {
 
         const { systemPrompt, userPrompt } = buildPrompt(eventType, theme, style, language);
 
-        const anthropic = new Anthropic({
-            apiKey: process.env.ANTHROPIC_API_KEY,
+        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+        const model = genAI.getGenerativeModel({
+            model: 'gemini-1.5-flash',
+            generationConfig: {
+                temperature: 0.7,
+                topP: 0.95,
+                topK: 40,
+                maxOutputTokens: 8192,
+                responseMimeType: 'application/json',
+            },
         });
 
-        const message = await anthropic.messages.create({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 4000,
-            temperature: 0.7,
-            system: systemPrompt,
-            messages: [{ role: 'user', content: userPrompt }],
-        });
+        const fullPrompt = `${systemPrompt}\n\nUSER REQUEST:\n${userPrompt}`;
 
-        // Extract text from response
-        const responseText = message.content
-            .filter((block): block is Anthropic.TextBlock => block.type === 'text')
-            .map(block => block.text)
-            .join('');
-
-        // Parse JSON from response - handle markdown code blocks
-        let cleanJson = responseText.trim();
-        if (cleanJson.startsWith('```')) {
-            cleanJson = cleanJson.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
-        }
+        const result = await model.generateContent(fullPrompt);
+        const responseText = result.response.text();
 
         let content;
         try {
-            content = JSON.parse(cleanJson);
+            content = JSON.parse(responseText.trim());
         } catch {
-            // Retry once if JSON parsing fails
-            const retryMessage = await anthropic.messages.create({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 4000,
-                temperature: 0.5,
-                system: systemPrompt,
-                messages: [
-                    { role: 'user', content: userPrompt },
-                    { role: 'assistant', content: responseText },
-                    { role: 'user', content: 'Response sebelumnya bukan valid JSON. Tolong return HANYA JSON tanpa text lain, tanpa markdown code blocks.' },
-                ],
-            });
-
-            const retryText = retryMessage.content
-                .filter((block): block is Anthropic.TextBlock => block.type === 'text')
-                .map(block => block.text)
-                .join('');
-
-            let retryClean = retryText.trim();
-            if (retryClean.startsWith('```')) {
-                retryClean = retryClean.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+            // Handle case where it might wrap in code blocks despite responseMimeType
+            let cleanJson = responseText.trim();
+            if (cleanJson.startsWith('```')) {
+                cleanJson = cleanJson.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
             }
-
-            content = JSON.parse(retryClean);
+            content = JSON.parse(cleanJson);
         }
 
         // Save to database

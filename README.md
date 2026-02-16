@@ -1,10 +1,10 @@
 # 🕌 KhutbahKu
 
-**Khutbah Berkualitas, Praktis & Cepat** — AI-powered Islamic sermon generator.
+**Khutbah Berkualitas, Praktis & Cepat** — Sistem Khutbah Otomatis.
 
 ## ✨ Features
 
-- **AI Khutbah Generation** — Generate complete sermons with authentic Quran verses and Hadith
+- **Khutbah Otomatis** — Menyusun khutbah lengkap dengan ayat Al-Quran dan Hadith shahih
 - **12 Event Types** — Friday sermon, Eid, nikah, aqiqah, and more
 - **20 Themes** — Tauhid, akhlak, ibadah, muamalah, and more
 - **4 Language Styles** — Formal, heartfelt, poetic, contemporary
@@ -17,7 +17,7 @@
 - **Next.js 16** (App Router, TypeScript)
 - **Tailwind CSS v4** (Custom Islamic green theme)
 - **Supabase** (Auth + PostgreSQL)
-- **Anthropic Claude API** (AI generation)
+- **Google Gemini API** (Free Tier)
 - **docx** (Word document export)
 
 ## 📦 Setup
@@ -35,7 +35,7 @@
    - Create a new project at [supabase.com](https://supabase.com)
    - Run `supabase/migration.sql` in the SQL Editor
    - Copy URL and anon key to `.env.local`
-5. Get Anthropic API key from [console.anthropic.com](https://console.anthropic.com)
+5. Get Google Gemini API key from [aistudio.google.com](https://aistudio.google.com)
 6. Run dev server:
    ```bash
    npm run dev
@@ -48,7 +48,7 @@
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon/public key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key |
-| `ANTHROPIC_API_KEY` | Anthropic Claude API key |
+| `GEMINI_API_KEY` | Google Gemini API key |
 | `NEXT_PUBLIC_APP_URL` | App URL (default: http://localhost:3000) |
 
 ## 📁 Project Structure
