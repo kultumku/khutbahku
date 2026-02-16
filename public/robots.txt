@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /generator
+Allow: /community
+Disallow: /admin
+Disallow: /api/
+Disallow: /auth/
+Disallow: /history
+
+Sitemap: https://khutbahku.com/sitemap.xml

@@ -19,6 +19,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         { href: '/dashboard', icon: '🏠', label: 'Dashboard' },
         { href: '/generator', icon: '✨', label: 'Buat Khutbah' },
         { href: '/history', icon: '📚', label: 'Riwayat' },
+        { href: '/teams', icon: '👥', label: 'Unit & Tim' },
+        { href: '/community', icon: '🌐', label: 'Komunitas' },
+        { href: '/settings', icon: '⚙️', label: 'Pengaturan' },
     ];
 
     return (
@@ -78,8 +81,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                             key={item.href}
                             href={item.href}
                             className={`flex flex-col items-center gap-1 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${pathname === item.href
-                                    ? 'text-[var(--color-primary)]'
-                                    : 'text-[var(--color-text-muted)]'
+                                ? 'text-[var(--color-primary)]'
+                                : 'text-[var(--color-text-muted)]'
                                 }`}
                         >
                             <span className="text-xl">{item.icon}</span>

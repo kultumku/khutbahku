@@ -1,10 +1,25 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { buildPrompt } from '@/lib/utils/prompts';
+import { checkQuota } from '@/lib/utils/quota';
 
-export async function POST(request: Request) {
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+
+import { z } from 'zod';
+
+const generateSchema = z.object({
+    eventType: z.string().min(1),
+    theme: z.string().min(1),
+    style: z.string().min(1),
+    language: z.string().min(1),
+});
+
+export async function POST(req: NextRequest) {
     try {
+        const { allowed, error: quotaError } = await checkQuota();
+        if (!allowed) return NextResponse.json({ error: quotaError }, { status: 403 });
+
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
 
@@ -12,12 +27,14 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const body = await request.json();
-        const { eventType, theme, style, language } = body;
+        const body = await req.json();
+        const validation = generateSchema.safeParse(body);
 
-        if (!eventType || !theme || !style || !language) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        if (!validation.success) {
+            return NextResponse.json({ error: 'Data tidak valid', details: validation.error.format() }, { status: 400 });
         }
+
+        const { eventType, theme, style, language } = validation.data;
 
         const { systemPrompt, userPrompt } = buildPrompt(eventType, theme, style, language);
 
