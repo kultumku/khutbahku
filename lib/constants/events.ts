@@ -1,0 +1,88 @@
+import { EventType } from '@/types/khutbah';
+
+export const EVENT_TYPES: EventType[] = [
+    {
+        id: 'jumat',
+        name: "Khutbah Jum'at",
+        icon: '📅',
+        duration: 15,
+        structure: ['mukadimah', 'khutbah1', 'pause', 'khutbah2', 'penutup'],
+    },
+    {
+        id: 'idul_fitri',
+        name: 'Khutbah Idul Fitri',
+        icon: '🌙',
+        duration: 20,
+        structure: ['mukadimah', 'khutbah1', 'pause', 'khutbah2', 'penutup'],
+    },
+    {
+        id: 'idul_adha',
+        name: 'Khutbah Idul Adha',
+        icon: '🐑',
+        duration: 20,
+        structure: ['mukadimah', 'khutbah1', 'pause', 'khutbah2', 'penutup'],
+    },
+    {
+        id: 'nikah',
+        name: 'Khutbah Nikah',
+        icon: '💒',
+        duration: 10,
+        structure: ['mukadimah', 'khutbah1', 'penutup'],
+    },
+    {
+        id: 'aqiqah',
+        name: 'Khutbah Aqiqah',
+        icon: '👶',
+        duration: 10,
+        structure: ['mukadimah', 'khutbah1', 'penutup'],
+    },
+    {
+        id: 'pemakaman',
+        name: 'Khutbah Pemakaman',
+        icon: '🤲',
+        duration: 8,
+        structure: ['mukadimah', 'khutbah1', 'penutup'],
+    },
+    {
+        id: 'kultum_ramadhan',
+        name: 'Kultum Ramadhan',
+        icon: '🌙',
+        duration: 7,
+        structure: ['mukadimah', 'khutbah1', 'penutup'],
+    },
+    {
+        id: 'tausiyah',
+        name: 'Tausiyah Umum',
+        icon: '🎤',
+        duration: 15,
+        structure: ['mukadimah', 'khutbah1', 'pause', 'khutbah2', 'penutup'],
+    },
+    {
+        id: 'istisqa',
+        name: 'Khutbah Istisqa',
+        icon: '☔',
+        duration: 15,
+        structure: ['mukadimah', 'khutbah1', 'pause', 'khutbah2', 'penutup'],
+    },
+    {
+        id: 'gerhana',
+        name: 'Khutbah Gerhana',
+        icon: '🌑',
+        duration: 10,
+        structure: ['mukadimah', 'khutbah1', 'penutup'],
+    },
+    {
+        id: 'tahun_baru_hijriyah',
+        name: 'Khutbah Tahun Baru Hijriyah',
+        icon: '📆',
+        duration: 15,
+        structure: ['mukadimah', 'khutbah1', 'pause', 'khutbah2', 'penutup'],
+    },
+    {
+        id: 'maulid_nabi',
+        name: 'Khutbah Maulid Nabi',
+        icon: '🕌',
+        duration: 20,
+        structure: ['mukadimah', 'khutbah1', 'pause', 'khutbah2', 'penutup'],
+    },
+];
