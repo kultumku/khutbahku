@@ -16,8 +16,8 @@ export async function POST(req: NextRequest) {
     const { data: { user: requester } } = await supabase.auth.getUser();
     if (!requester) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { data: profile } = await supabase.from('profiles').select('is_admin').eq('id', requester.id).single();
-    if (!profile?.is_admin) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', requester.id).single();
+    if (profile?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     // 2. Validate Body
     const body = await req.json();
@@ -33,8 +33,9 @@ export async function POST(req: NextRequest) {
     const { error } = await supabase
         .from('profiles')
         .update({
-            subscription_tier: 'pro',
-            subscription_expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() // 1 year for now
+            role: 'pro',
+            proof_status: 'verified',
+            subscription_expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() // 1 year
         })
         .eq('id', userId);
 

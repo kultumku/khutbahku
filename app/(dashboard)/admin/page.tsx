@@ -17,8 +17,8 @@ export default function AdminDashboard() {
     const checkAdmin = async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
-        const { data: profile } = await supabase.from('profiles').select('is_admin').eq('id', user.id).single();
-        if (profile?.is_admin) setIsAdmin(true);
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        if (profile?.role === 'admin') setIsAdmin(true);
     };
 
     const fetchUsers = async () => {
@@ -40,6 +40,16 @@ export default function AdminDashboard() {
         if (res.ok) {
             alert('User berhasil di-upgrade ke Pro!');
             fetchUsers();
+            // Trigger email activation
+            await fetch('/api/email/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: email,
+                    subject: 'Akses Pro KhutbahKu Aktif!',
+                    body: 'Selamat! Pembayaran Anda telah dikonfirmasi. Akun Pro Anda sudah aktif selama 1 tahun.'
+                }),
+            });
         } else {
             alert('Terjadi kesalahan saat upgrade.');
         }
@@ -65,8 +75,8 @@ export default function AdminDashboard() {
                     <thead className="bg-slate-50 border-b border-slate-100">
                         <tr>
                             <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">User</th>
+                            <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Bukti Transfer</th>
                             <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Status</th>
-                            <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Tgl Daftar</th>
                             <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest text-right">Aksi</th>
                         </tr>
                     </thead>
@@ -76,22 +86,29 @@ export default function AdminDashboard() {
                                 <td className="px-6 py-4">
                                     <p className="font-bold text-slate-800">{u.full_name || 'Tanpa Nama'}</p>
                                     <p className="text-xs text-slate-400 font-medium">{u.email}</p>
+                                    <p className="text-[10px] text-slate-400 uppercase tracking-tighter mt-1">{new Date(u.created_at).toLocaleDateString()}</p>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className={`text-[10px] font-black px-2 py-1 rounded-full uppercase ${u.subscription_tier === 'pro' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
-                                        {u.subscription_tier}
+                                    {u.proof_url ? (
+                                        <a href={u.proof_url} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
+                                            📄 Lihat Bukti
+                                        </a>
+                                    ) : (
+                                        <span className="text-[10px] text-slate-300 italic">Belum Upload</span>
+                                    )}
+                                </td>
+                                <td className="px-6 py-4">
+                                    <span className={`text-[10px] font-black px-2 py-1 rounded-full uppercase ${u.role === 'pro' ? 'bg-emerald-100 text-emerald-600' : u.proof_status === 'pending' ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'}`}>
+                                        {u.role === 'pro' ? 'Active Pro' : u.proof_status === 'pending' ? 'Pending Verif' : u.role}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4 text-xs text-slate-500">
-                                    {new Date(u.created_at).toLocaleDateString()}
-                                </td>
                                 <td className="px-6 py-4 text-right">
-                                    {u.subscription_tier !== 'pro' && (
+                                    {u.role !== 'pro' && (
                                         <button
                                             onClick={() => handleUpgrade(u.id, u.email)}
                                             className="bg-emerald-500 text-white text-xs font-black px-4 py-2 rounded-xl hover:bg-emerald-600 transition-all shadow-md shadow-emerald-500/10"
                                         >
-                                            Konfirmasi Pro
+                                            Verify & Activate
                                         </button>
                                     )}
                                 </td>

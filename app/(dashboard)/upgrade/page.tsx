@@ -37,11 +37,38 @@ export default function UpgradePage() {
             const fileName = `${user.id}-${Date.now()}.${fileExt}`;
             const filePath = `proofs/${fileName}`;
 
-            const { error } = await supabase.storage
+            const { error: uploadError } = await supabase.storage
                 .from('payment-proofs')
                 .upload(filePath, file);
 
-            if (error) throw error;
+            if (uploadError) throw uploadError;
+
+            // Get public URL
+            const { data: { publicUrl } } = supabase.storage
+                .from('payment-proofs')
+                .getPublicUrl(filePath);
+
+            // Update profile
+            const { error: updateError } = await supabase
+                .from('profiles')
+                .update({
+                    proof_url: publicUrl,
+                    proof_status: 'pending'
+                })
+                .eq('id', user.id);
+
+            if (updateError) throw updateError;
+
+            // Notify Admin via Email
+            await fetch('/api/email/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: 'ghostk299@gmail.com', // Admin email
+                    subject: 'Ada Bukti Transfer Baru! [KhutbahKu]',
+                    body: `User ${user.email} baru saja mengunggah bukti transfer. Cek Dashboard Admin untuk verifikasi: https://khutbahku.vercel.app/admin`
+                }),
+            });
 
             setProofUploaded(true);
             alert('Bukti berhasil diupload! Admin akan segera memverifikasi.');
