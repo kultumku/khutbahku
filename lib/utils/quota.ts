@@ -8,7 +8,7 @@ export async function checkQuota() {
 
     const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
 
-    if (profile?.subscription_tier === 'pro') {
+    if (profile?.role === 'pro' || profile?.role === 'admin') {
         return { allowed: true };
     }
 

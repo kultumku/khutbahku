@@ -27,8 +27,8 @@ export default function KhutbahViewerPage({ params }: { params: Promise<{ id: st
             if (!user) { router.push('/login'); return; }
 
             // Check if user is Pro
-            const { data: profile } = await supabase.from('profiles').select('subscription_tier').eq('id', user.id).single();
-            setIsPro(profile?.subscription_tier === 'pro');
+            const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+            setIsPro(profile?.role === 'pro' || profile?.role === 'admin');
 
             const { data } = await supabase
                 .from('khutbahs')
