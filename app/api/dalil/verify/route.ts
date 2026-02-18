@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyVerse } from "@/lib/utils/dalil-verify";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }, { apiVersion: 'v1' });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }, { apiVersion: 'v1beta' });
 
 export async function POST(req: NextRequest) {
   try {
