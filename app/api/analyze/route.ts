@@ -21,11 +21,11 @@ export async function POST(req: NextRequest) {
         const { content } = validation.data;
 
         const model = genAI.getGenerativeModel({
-            model: 'gemini-pro',
+            model: 'gemini-1.5-flash',
             generationConfig: {
                 responseMimeType: 'application/json',
             },
-        });
+        }, { apiVersion: 'v1' });
 
         const prompt = `
       Analisalah naskah khutbah berikut. Berikan penilaian objektif dalam format JSON.

@@ -8,12 +8,12 @@ export async function POST(req: NextRequest) {
         const { content, instruction } = await req.json();
 
         const model = genAI.getGenerativeModel({
-            model: 'gemini-pro',
+            model: 'gemini-1.5-flash',
             generationConfig: {
                 temperature: 0.7,
                 maxOutputTokens: 8192,
             },
-        });
+        }, { apiVersion: 'v1' });
 
         const prompt = `
       Anda adalah asisten ahli penyusun khutbah. 

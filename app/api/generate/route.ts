@@ -38,9 +38,8 @@ export async function POST(req: NextRequest) {
 
         const { systemPrompt, userPrompt } = buildPrompt(eventType, theme, style, language);
 
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
         const model = genAI.getGenerativeModel({
-            model: 'gemini-pro',
+            model: 'gemini-1.5-flash',
             generationConfig: {
                 temperature: 0.7,
                 topP: 0.95,
@@ -48,7 +47,7 @@ export async function POST(req: NextRequest) {
                 maxOutputTokens: 8192,
                 responseMimeType: 'application/json',
             },
-        });
+        }, { apiVersion: 'v1' });
 
         const fullPrompt = `${systemPrompt}\n\nUSER REQUEST:\n${userPrompt}`;
 
