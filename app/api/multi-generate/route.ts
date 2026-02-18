@@ -37,9 +37,6 @@ export async function POST(req: NextRequest) {
 
         const model = genAI.getGenerativeModel({
             model: 'gemini-1.5-flash',
-            generationConfig: {
-                responseMimeType: 'application/json',
-            },
         }, { apiVersion: 'v1' });
 
         const prompt = `
@@ -58,7 +55,18 @@ export async function POST(req: NextRequest) {
     `;
 
         const result = await model.generateContent(prompt);
-        const versionsData = JSON.parse(result.response.text());
+        const responseText = result.response.text();
+
+        let versionsData;
+        try {
+            versionsData = JSON.parse(responseText.trim());
+        } catch {
+            let cleanJson = responseText.trim();
+            if (cleanJson.startsWith('```')) {
+                cleanJson = cleanJson.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+            }
+            versionsData = JSON.parse(cleanJson);
+        }
 
         const versionGroupId = crypto.randomUUID();
 
