@@ -39,8 +39,15 @@ export async function POST(req: NextRequest) {
         const { systemPrompt, userPrompt } = buildPrompt(eventType, theme, style, language);
 
         const model = genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash'
-        }, { apiVersion: 'v1' });
+            model: 'gemini-flash-latest',
+            generationConfig: {
+                temperature: 0.7,
+                topP: 0.95,
+                topK: 40,
+                maxOutputTokens: 2048,
+                responseMimeType: 'application/json',
+            },
+        }, { apiVersion: 'v1beta' });
 
         const fullPrompt = `${systemPrompt}\n\nUSER REQUEST:\n${userPrompt}`;
 
