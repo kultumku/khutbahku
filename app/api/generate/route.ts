@@ -42,9 +42,7 @@ export async function POST(req: NextRequest) {
             model: 'gemini-1.5-flash',
             generationConfig: {
                 temperature: 0.7,
-                topP: 0.95,
-                topK: 40,
-                maxOutputTokens: 8192,
+                maxOutputTokens: 2048,
                 responseMimeType: 'application/json',
             },
         }, { apiVersion: 'v1beta' });
