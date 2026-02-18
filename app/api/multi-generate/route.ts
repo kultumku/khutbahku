@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
         const { eventType, theme, style, language } = validation.data;
 
         const model = genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash-latest',
+            model: 'gemini-pro',
             generationConfig: {
                 responseMimeType: 'application/json',
             },
